@@ -347,6 +347,8 @@ namespace ScriptUnpacker
 
             bytecodevB.Add(GlobalCode);
 
+            List<string> names = new List<string>();
+
             for (int c = 0; c < gcvB.Categories.Count; c++)
             {
                 for (int s = 0; s < gcvB.Categories[c].Scenes.Count; s++)
@@ -354,69 +356,74 @@ namespace ScriptUnpacker
                     string BytecodeName = "";
                     BytecodeName = datafolderpath + "..//Bytecode//" + gcvB.Categories[c].Scenes[s].SceneFolder + ".bin";
 
-                    RSDKvB.StageConfig scvB = new RSDKvB.StageConfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
-
-                    RSDKvB.Bytecode bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(BytecodeName), gcvB.ObjectsNames.Count + 1);
-
-                    if (scvB.LoadGlobalScripts)
+                    if (!names.Contains(BytecodeName))
                     {
-                        bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(datafolderpath + "..//Bytecode//GlobalCode.bin"), 1);
-                        bytecode.LoadStageBytecodeData(new RSDKvB.Reader(BytecodeName), gcvB.ObjectsNames.Count + 1);
+                        names.Add(BytecodeName);
 
-                        bytecode.sourceNames = new string[gcvB.ScriptPaths.Count + scvB.ScriptPaths.Count + 1];
-                        bytecode.typeNames = new string[gcvB.ObjectsNames.Count + scvB.ObjectsNames.Count + 1];
+                        RSDKvB.StageConfig scvB = new RSDKvB.StageConfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
 
-                        bytecode.sourceNames[0] = "BlankObject";
-                        bytecode.typeNames[0] = "BlankObject";
+                        RSDKvB.Bytecode bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(BytecodeName), gcvB.ObjectsNames.Count + 1);
 
-                        for (int i = 1; i < gcvB.GlobalVariables.Count; i++)
+                        if (scvB.LoadGlobalScripts)
                         {
-                            bytecode.globalVariableNames[i] = gcvB.GlobalVariables[i].Name;
+                            bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(datafolderpath + "..//Bytecode//GlobalCode.bin"), 1);
+                            bytecode.LoadStageBytecodeData(new RSDKvB.Reader(BytecodeName), gcvB.ObjectsNames.Count + 1);
+
+                            bytecode.sourceNames = new string[gcvB.ScriptPaths.Count + scvB.ScriptPaths.Count + 1];
+                            bytecode.typeNames = new string[gcvB.ObjectsNames.Count + scvB.ObjectsNames.Count + 1];
+
+                            bytecode.sourceNames[0] = "BlankObject";
+                            bytecode.typeNames[0] = "BlankObject";
+
+                            for (int i = 1; i < gcvB.GlobalVariables.Count; i++)
+                            {
+                                bytecode.globalVariableNames[i] = gcvB.GlobalVariables[i].Name;
+                            }
+
+                            int ID = 1;
+
+                            for (int i = 0; i < gcvB.ObjectsNames.Count; i++)
+                            {
+                                bytecode.sourceNames[ID] = gcvB.ScriptPaths[i];
+                                bytecode.typeNames[ID] = gcvB.ObjectsNames[i];
+                                ID++;
+                            }
+
+                            for (int i = 0; i < scvB.ObjectsNames.Count; i++)
+                            {
+                                bytecode.sourceNames[ID] = scvB.ScriptPaths[i];
+                                bytecode.typeNames[ID] = scvB.ObjectsNames[i];
+                                ID++;
+                            }
+
+                            bytecodevB.Add(bytecode);
                         }
-
-                        int ID = 1;
-
-                        for (int i = 0; i < gcvB.ObjectsNames.Count; i++)
+                        else
                         {
-                            bytecode.sourceNames[ID] = gcvB.ScriptPaths[i];
-                            bytecode.typeNames[ID] = gcvB.ObjectsNames[i];
-                            ID++;
+                            bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(BytecodeName), 1);
+
+                            bytecode.sourceNames = new string[scvB.ScriptPaths.Count + 1];
+                            bytecode.typeNames = new string[scvB.ObjectsNames.Count + 1];
+
+                            bytecode.sourceNames[0] = "BlankObject";
+                            bytecode.typeNames[0] = "BlankObject";
+
+                            for (int i = 1; i < gcvB.GlobalVariables.Count; i++)
+                            {
+                                bytecode.globalVariableNames[i] = gcvB.GlobalVariables[i].Name;
+                            }
+
+                            int ID = 1;
+
+                            for (int i = 0; i < scvB.ObjectsNames.Count; i++)
+                            {
+                                bytecode.sourceNames[ID] = scvB.ScriptPaths[i];
+                                bytecode.typeNames[ID] = scvB.ObjectsNames[i];
+                                ID++;
+                            }
+
+                            bytecodevB.Add(bytecode);
                         }
-
-                        for (int i = 0; i < scvB.ObjectsNames.Count; i++)
-                        {
-                            bytecode.sourceNames[ID] = scvB.ScriptPaths[i];
-                            bytecode.typeNames[ID] = scvB.ObjectsNames[i];
-                            ID++;
-                        }
-
-                        bytecodevB.Add(bytecode);
-                    }
-                    else
-                    {
-                        bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(BytecodeName), 1);
-
-                        bytecode.sourceNames = new string[scvB.ScriptPaths.Count + 1];
-                        bytecode.typeNames = new string[scvB.ObjectsNames.Count + 1];
-
-                        bytecode.sourceNames[0] = "BlankObject";
-                        bytecode.typeNames[0] = "BlankObject";
-
-                        for (int i = 1; i < gcvB.GlobalVariables.Count; i++)
-                        {
-                            bytecode.globalVariableNames[i] = gcvB.GlobalVariables[i].Name;
-                        }
-
-                        int ID = 1;
-
-                        for (int i = 0; i < scvB.ObjectsNames.Count; i++)
-                        {
-                            bytecode.sourceNames[ID] = scvB.ScriptPaths[i];
-                            bytecode.typeNames[ID] = scvB.ObjectsNames[i];
-                            ID++;
-                        }
-
-                        bytecodevB.Add(bytecode);
                     }
                 }
             }
@@ -441,14 +448,14 @@ namespace ScriptUnpacker
         {
             for (int i = 0; i < bytecodevB.Count; i++)
             {
-                try
-                {
+               // try
+                //{
                     bytecodevB[i].Decompile(folderpath);
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                //}
+                //catch(Exception ex)
+                //{
+                //    Console.WriteLine(ex.Message);
+                //}
             }
         }
 
@@ -602,7 +609,7 @@ namespace ScriptUnpacker
                                         bytecodevB[0].globalVariableNames[i] = gcvB.GlobalVariables[i].Name;
                                     }
 
-                                    for (int i = 1; i < gcv2.ObjectsNames.Count + 1; i++)
+                                    for (int i = 1; i < gcvB.ObjectsNames.Count + 1; i++)
                                     {
                                         bytecodevB[0].sourceNames[i] = gcvB.ScriptPaths[i - 1];
                                         bytecodevB[0].typeNames[i] = gcvB.ObjectsNames[i - 1];
