@@ -225,7 +225,7 @@ namespace ScriptUnpacker
                         {
                             bytecode = new RSDKv2.Bytecode(new RSDKv2.Reader(GlobalPath), 1, MobileVer);
                             bytecode.LoadStageBytecodeData(new RSDKv2.Reader(BytecodeName), gcv2.ObjectsNames.Count + 1, MobileVer);
-
+                            bytecode.GlobalfunctionCount += GlobalCode.functionCount;
                             bytecode.sourceNames = new string[gcv2.ObjectsNames.Count + scv2.ScriptPaths.Count + 1];
                             bytecode.typeNames = new string[gcv2.ObjectsNames.Count + scv2.ObjectsNames.Count + 1];
 
@@ -243,7 +243,7 @@ namespace ScriptUnpacker
                             {
                                 bytecode.sourceNames[ID] = gcv2.ScriptPaths[i];
                                 //bytecode.typeNames[ID] = gcv2.ObjectsNames[i];
-                                bytecode.typeNames[ID] = Path.GetFileNameWithoutExtension(gcv2.ScriptPaths[i]);
+                                bytecode.typeNames[ID] = gcv2.ObjectsNames[i];
                                 ID++;
                             }
 
@@ -251,7 +251,7 @@ namespace ScriptUnpacker
                             {
                                 bytecode.sourceNames[ID] = scv2.ScriptPaths[i];
                                 //bytecode.typeNames[ID] = scv2.ObjectsNames[i];
-                                bytecode.typeNames[ID] = Path.GetFileNameWithoutExtension(scv2.ScriptPaths[i]);
+                                bytecode.typeNames[ID] = scv2.ObjectsNames[i];
                                 ID++;
                             }
                         }
@@ -275,7 +275,7 @@ namespace ScriptUnpacker
                             for (int i = 0; i < scv2.ObjectsNames.Count; i++)
                             {
                                 bytecode.sourceNames[ID] = scv2.ScriptPaths[i];
-                                bytecode.typeNames[ID] = Path.GetFileNameWithoutExtension(scv2.ScriptPaths[i]);
+                                bytecode.typeNames[ID] = scv2.ObjectsNames[i];
                                 ID++;
                             }
                         }
@@ -371,7 +371,7 @@ namespace ScriptUnpacker
 
                             bytecode.sourceNames = new string[gcvB.ScriptPaths.Count + scvB.ScriptPaths.Count + 1];
                             bytecode.typeNames = new string[gcvB.ObjectsNames.Count + scvB.ObjectsNames.Count + 1];
-
+                            bytecode.GlobalfunctionCount += GlobalCode.functionCount;
                             bytecode.sourceNames[0] = "BlankObject";
                             bytecode.typeNames[0] = "BlankObject";
 
@@ -435,7 +435,8 @@ namespace ScriptUnpacker
             {
                 //try
                 //{
-                    bytecodev2[i].Decompile(folderpath);
+                bytecodev2[i].UseHex = UseHexCB.Checked;
+                bytecodev2[i].Decompile(folderpath);
                 //}
                 //catch (Exception ex)
                 //{
@@ -450,6 +451,7 @@ namespace ScriptUnpacker
             {
                // try
                 //{
+                    bytecodevB[i].UseHex = UseHexCB.Checked;
                     bytecodevB[i].Decompile(folderpath);
                 //}
                 //catch(Exception ex)
@@ -667,9 +669,11 @@ namespace ScriptUnpacker
                 switch (RSDKver)
                 {
                     case 0:
+                        bytecodev2[0].UseHex = UseHexCB.Checked;
                         bytecodev2[0].Decompile(dlg.SelectedPath);
                         break;
                     case 1:
+                        bytecodevB[0].UseHex = UseHexCB.Checked;
                         bytecodevB[0].Decompile(dlg.SelectedPath);
                         break;
                     case 2:
