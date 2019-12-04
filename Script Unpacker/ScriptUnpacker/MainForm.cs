@@ -106,11 +106,11 @@ namespace ScriptUnpacker
                         {
                             if (!Directory.Exists("Scripts//" + Path.GetDirectoryName(sc.ScriptPaths[i])))
                             {
-                                Directory.CreateDirectory("Scripts//" + Path.GetDirectoryName(sc.ScriptPaths[i]));
+                                //Directory.CreateDirectory("Scripts//" + Path.GetDirectoryName(sc.ScriptPaths[i]));
                             }
                             if (!File.Exists("Scripts//" + sc.ScriptPaths[i]))
                             {
-                                File.CreateText("Scripts//" + sc.ScriptPaths[i]);
+                                //File.CreateText("Scripts//" + sc.ScriptPaths[i]);
                             }
                         }
                     }
