@@ -74,7 +74,7 @@ namespace ScriptUnpacker
 
         public void UnpackDataFolderV2(string datafolderpath)
         {
-            RSDKv2.GameConfig gc = new RSDKv2.GameConfig(datafolderpath + "//Game//Gameconfig.bin");
+            RSDKv2.Gameconfig gc = new RSDKv2.Gameconfig(datafolderpath + "//Game//Gameconfig.bin");
             DirectoryInfo dir = new DirectoryInfo("Scripts");
             dir.Create();
             bytecodev2.Clear();
@@ -90,9 +90,9 @@ namespace ScriptUnpacker
                 }
             }
 
-            foreach (RSDKv2.GameConfig.Category sg in gc.Categories)
+            foreach (RSDKv2.Gameconfig.Category sg in gc.Categories)
             {
-                foreach (RSDKv2.GameConfig.Category.SceneInfo si in sg.Scenes)
+                foreach (RSDKv2.Gameconfig.Category.SceneInfo si in sg.Scenes)
                 {
                     bool filefound = true;
 
@@ -100,7 +100,7 @@ namespace ScriptUnpacker
 
                     if (filefound)
                     {
-                        RSDKv2.StageConfig sc = new RSDKv2.StageConfig(datafolderpath + "//Stages//" + si.SceneFolder + "//Stageconfig.bin");
+                        RSDKv2.Stageconfig sc = new RSDKv2.Stageconfig(datafolderpath + "//Stages//" + si.SceneFolder + "//Stageconfig.bin");
 
                         for (int i = 0; i < sc.ScriptPaths.Count; i++)
                         {
@@ -117,7 +117,7 @@ namespace ScriptUnpacker
                 }
             }
 
-            RSDKv2.GameConfig gcv2 = new RSDKv2.GameConfig(datafolderpath + "//Game//Gameconfig.bin");
+            RSDKv2.Gameconfig gcv2 = new RSDKv2.Gameconfig(datafolderpath + "//Game//Gameconfig.bin");
 
             string GlobalPath = datafolderpath + "//Scripts//Bytecode//GS000.bin";
 
@@ -217,7 +217,7 @@ namespace ScriptUnpacker
 
                     if (filefound)
                     {
-                        RSDKv2.StageConfig scv2 = new RSDKv2.StageConfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
+                        RSDKv2.Stageconfig scv2 = new RSDKv2.Stageconfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
 
                         RSDKv2.Bytecode bytecode = new RSDKv2.Bytecode(new RSDKv2.Reader(BytecodeName), gcv2.ObjectsNames.Count + 1,MobileVer);
 
@@ -288,7 +288,7 @@ namespace ScriptUnpacker
 
         public void UnpackDataFolderVB(string datafolderpath)
         {
-            RSDKvB.GameConfig gc = new RSDKvB.GameConfig(datafolderpath + "//Game//Gameconfig.bin");
+            RSDKvB.Gameconfig gc = new RSDKvB.Gameconfig(datafolderpath + "//Game//Gameconfig.bin");
             DirectoryInfo dir = new DirectoryInfo("Scripts");
             dir.Create();
             bytecodevB.Clear();
@@ -304,11 +304,11 @@ namespace ScriptUnpacker
                 }
             }
 
-            foreach (RSDKvB.GameConfig.Category sg in gc.Categories)
+            foreach (RSDKvB.Gameconfig.Category sg in gc.Categories)
             {
-                foreach (RSDKvB.GameConfig.Category.SceneInfo si in sg.Scenes)
+                foreach (RSDKvB.Gameconfig.Category.SceneInfo si in sg.Scenes)
                 {
-                    RSDKvB.StageConfig sc = new RSDKvB.StageConfig(datafolderpath + "//Stages//" + si.SceneFolder + "//Stageconfig.bin");
+                    RSDKvB.Stageconfig sc = new RSDKvB.Stageconfig(datafolderpath + "//Stages//" + si.SceneFolder + "//Stageconfig.bin");
 
                     for (int i = 0; i < sc.ScriptPaths.Count; i++)
                     {
@@ -324,7 +324,7 @@ namespace ScriptUnpacker
                 }
             }
 
-            RSDKvB.GameConfig gcvB = new RSDKvB.GameConfig(datafolderpath + "//Game//Gameconfig.bin");
+            RSDKvB.Gameconfig gcvB = new RSDKvB.Gameconfig(datafolderpath + "//Game//Gameconfig.bin");
 
             RSDKvB.Bytecode GlobalCode = new RSDKvB.Bytecode(new RSDKvB.Reader(datafolderpath + "..//Bytecode//GlobalCode.bin"), 1);
 
@@ -360,7 +360,7 @@ namespace ScriptUnpacker
                     {
                         names.Add(BytecodeName);
 
-                        RSDKvB.StageConfig scvB = new RSDKvB.StageConfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
+                        RSDKvB.Stageconfig scvB = new RSDKvB.Stageconfig(DataFolderPath + "//Stages//" + gc.Categories[c].Scenes[s].SceneFolder + "//Stageconfig.bin");
 
                         RSDKvB.Bytecode bytecode = new RSDKvB.Bytecode(new RSDKvB.Reader(BytecodeName), gcvB.ObjectsNames.Count + 1);
 
@@ -471,8 +471,8 @@ namespace ScriptUnpacker
             OpenFileDialog dlg2 = new OpenFileDialog();
             dlg2.Title = "Select Gameconfig/Stageconfig Files";
 
-            RSDKvB.GameConfig gcvB = new RSDKvB.GameConfig();
-            RSDKv2.GameConfig gcv2 = new RSDKv2.GameConfig();
+            RSDKvB.Gameconfig gcvB = new RSDKvB.Gameconfig();
+            RSDKv2.Gameconfig gcv2 = new RSDKv2.Gameconfig();
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
@@ -503,10 +503,10 @@ namespace ScriptUnpacker
                             switch(RSDKver)
                             {
                                 case 0:
-                                    gcv2 = new RSDKv2.GameConfig(dlg3.FileName);
+                                    gcv2 = new RSDKv2.Gameconfig(dlg3.FileName);
                                     break;
                                 case 1:
-                                    gcvB = new RSDKvB.GameConfig(dlg3.FileName);
+                                    gcvB = new RSDKvB.Gameconfig(dlg3.FileName);
                                     break;
                                 case 2:
                                     break;
@@ -523,7 +523,7 @@ namespace ScriptUnpacker
                             switch(IsGlobal)
                             {
                                 case true:
-                                    gcv2 = new RSDKv2.GameConfig(dlg2.FileName);
+                                    gcv2 = new RSDKv2.Gameconfig(dlg2.FileName);
                                     bytecodev2.Add(new RSDKv2.Bytecode(new RSDKv2.Reader(dlg.FileName), 1,mobile));
 
                                     bytecodev2[0].sourceNames = new string[gcv2.ScriptPaths.Count + 1];
@@ -557,7 +557,7 @@ namespace ScriptUnpacker
                                         }
                                     }
 
-                                    RSDKv2.StageConfig scv2 = new RSDKv2.StageConfig(dlg2.FileName);
+                                    RSDKv2.Stageconfig scv2 = new RSDKv2.Stageconfig(dlg2.FileName);
                                     RSDKv2.Bytecode SCbytecode = new RSDKv2.Bytecode(new RSDKv2.Reader(globalcode), 1, mobile);
                                     SCbytecode.LoadStageBytecodeData(new RSDKv2.Reader(dlg.FileName), gcv2.ScriptPaths.Count + 1,mobile);
                                     bytecodev2.Add(SCbytecode);
@@ -597,7 +597,7 @@ namespace ScriptUnpacker
                             switch (IsGlobal)
                             {
                                 case true:
-                                    gcvB = new RSDKvB.GameConfig(dlg2.FileName);
+                                    gcvB = new RSDKvB.Gameconfig(dlg2.FileName);
                                     bytecodevB.Add(new RSDKvB.Bytecode(new RSDKvB.Reader(dlg.FileName), 1));
 
                                     bytecodevB[0].sourceNames = new string[gcvB.ScriptPaths.Count + 1];
@@ -619,7 +619,7 @@ namespace ScriptUnpacker
                                     break;
                                 case false:
 
-                                    RSDKv2.StageConfig scvB = new RSDKv2.StageConfig(dlg2.FileName);
+                                    RSDKv2.Stageconfig scvB = new RSDKv2.Stageconfig(dlg2.FileName);
                                     bytecodevB.Add(new RSDKvB.Bytecode(new RSDKvB.Reader(dlg.FileName), gcvB.ScriptPaths.Count + 1));
 
                                     bytecodev2[0].sourceNames = new string[gcvB.ScriptPaths.Count + scvB.ScriptPaths.Count + 1];
